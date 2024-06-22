@@ -123,3 +123,9 @@ class MainController:
             print("사용자에 의해 중지됨")
         finally:
             GPIO.cleanup()
+
+if __name__ == "__main__":
+    PIR_PIN = 18
+    TCP_IP = '110.234.18.234'
+    TCP_PORT = 8080
+    YOLO_MODEL_PATH = 'yolov8n.pt'
