@@ -1,5 +1,6 @@
 import board
 import neopixel
+import socket
 import json
 
 class NeoPixelStrip:
@@ -37,6 +38,35 @@ class NeoPixelController:
     @staticmethod
     def normalization_lux(lx):
         return lx * 0.01
+
+
+class ServerClient:
+    def __init__(self, server_ip, server_port, controller):
+        self.server_ip = server_ip
+        self.server_port = server_port
+        self.controller = controller
+
+    def receive_data(self):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.connect((self.server_ip, self.server_port))
+            while True:
+                data = s.recv(1024)
+                if not data:
+                    break
+                print(f"Data received from server: {data.decode()}")
+                try:
+                    data_json = json.loads(data.decode())
+                    brightness = data_json['lx']
+                    color_r = data_json['r']
+                    color_g = data_json['g']
+                    color_b = data_json['b']
+
+                    # Set brightness and color temperature
+                    self.controller.set_brightness(NeoPixelController.normalization_lux(brightness))
+                    self.controller.set_color((color_r, color_g, color_b))
+                except json.JSONDecodeError:
+                    print("Received data is not valid JSON.")
+
 
 if __name__ == "__main__":
     SERVER_IP = '110.234.18.234'
