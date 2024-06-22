@@ -60,3 +60,42 @@ class Camera:
         jetson.utils.saveImageRGBA(img_name, frame)
         print(f"저장됨 {img_name}")
 
+
+class MotionDetector:
+    def __init__(self, pir_pin, camera, client_socket, model):
+        self.PIR_PIN = pir_pin
+        self.camera = camera
+        self.client_socket = client_socket
+        self.model = model
+
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.PIR_PIN, GPIO.IN)
+        GPIO.add_event_detect(self.PIR_PIN, GPIO.RISING, callback=self.motion_detected)
+
+    def motion_detected(self, channel):
+        print("동작 감지됨")
+
+        while GPIO.input(self.PIR_PIN):
+            frame = self.camera.capture_frame()
+
+            if self.camera.frame_count % 30 == 0:
+                img_name = "img.jpg"
+                self.camera.save_frame(frame, img_name)
+                self.detect_human(img_name)
+
+    def detect_human(self, input_image_path):
+        # 사람 인식을 위한 YOLO 모델 사용
+        results = self.model(source=input_image_path)
+
+        for result in results:
+            # 사람 클래스 (ID: 0)만 필터링
+            person_boxes = [box for box in result.boxes if box.cls == 0]
+
+            if len(person_boxes) > 0:
+                print("사람 감지됨")
+                self.process_image(input_image_path, "preprocessed_img.jpg")
+                print("전처리 완료")
+                self.client_socket.sendImages("preprocessed_img.jpg")
+            else:
+                print("사람 없음")
