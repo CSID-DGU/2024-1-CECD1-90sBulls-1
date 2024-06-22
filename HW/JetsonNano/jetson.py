@@ -106,3 +106,10 @@ class MotionDetector:
         denoised_image = cv2.GaussianBlur(image, (5, 5), 0)
         resized_image = cv2.resize(denoised_image, (640, 640), interpolation=cv2.INTER_LINEAR)
         cv2.imwrite(output_image_path, resized_image)
+
+class MainController:
+    def __init__(self, pir_pin, tcp_ip, tcp_port, yolo_model_path):
+        self.client_socket = ClientSocket(tcp_ip, tcp_port)
+        self.camera = Camera()
+        self.model = YOLO(yolo_model_path)
+        self.motion_detector = MotionDetector(pir_pin, self.camera, self.client_socket, self.model)
