@@ -99,3 +99,10 @@ class MotionDetector:
                 self.client_socket.sendImages("preprocessed_img.jpg")
             else:
                 print("사람 없음")
+		    
+   @staticmethod
+    def process_image(input_image_path, output_image_path):
+        image = cv2.imread(input_image_path)
+        denoised_image = cv2.GaussianBlur(image, (5, 5), 0)
+        resized_image = cv2.resize(denoised_image, (640, 640), interpolation=cv2.INTER_LINEAR)
+        cv2.imwrite(output_image_path, resized_image)
