@@ -113,3 +113,13 @@ class MainController:
         self.camera = Camera()
         self.model = YOLO(yolo_model_path)
         self.motion_detector = MotionDetector(pir_pin, self.camera, self.client_socket, self.model)
+	    
+    def run(self):
+        print("동작 대기 중...")
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            print("사용자에 의해 중지됨")
+        finally:
+            GPIO.cleanup()
