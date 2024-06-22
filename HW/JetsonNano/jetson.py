@@ -129,3 +129,6 @@ if __name__ == "__main__":
     TCP_IP = '110.234.18.234'
     TCP_PORT = 8080
     YOLO_MODEL_PATH = 'yolov8n.pt'
+
+    controller = MainController(PIR_PIN, TCP_IP, TCP_PORT, YOLO_MODEL_PATH)
+    controller.run()
