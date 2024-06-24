@@ -120,3 +120,9 @@ def main():
     # For Jetson Nano (After receiving images from client, predict result through model and send to Raspberry pi)
     receive_socket = threading.Thread(target=receive_jetson)
     receive_socket.start()
+
+    # For Application (After receiving Color temperature and Lux from client, send to Raspberry pi)
+    # plan to develop in second semester
+
+if __name__ == "__main__":
+    main()
