@@ -83,3 +83,11 @@ def recvall(sock, count):
         buf += newbuf
         count -= len(newbuf)
     return buf
+
+# 1. Encode data JSON and send the result Raspberry pi
+def send_socket(data, sender_conn):
+    for client in clients:
+        if client != sender_conn:
+            print("Send results to Raspberry")
+            client.send(data.encode())
+
