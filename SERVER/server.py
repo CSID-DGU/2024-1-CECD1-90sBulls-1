@@ -111,3 +111,12 @@ def receive_jetson():
         server.socketClose()
 
 
+
+# plan to develop in second semester
+# def receive_application(self):
+
+def main():
+
+    # For Jetson Nano (After receiving images from client, predict result through model and send to Raspberry pi)
+    receive_socket = threading.Thread(target=receive_jetson)
+    receive_socket.start()
