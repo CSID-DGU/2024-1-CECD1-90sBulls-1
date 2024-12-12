@@ -121,3 +121,8 @@ class MainController:
         self.camera = Camera()
         self.model = YOLO(yolo_model_path)
         self.motion_detector = MotionDetector(pir_pin, self.camera, self.client_socket, self.model)
+
+    def run(self):
+        print("동작 대기 중...")
+        memory_manager = threading.Thread(target=manage_memory)  # 메모리 관리 스레드 시작
+        memory_manager.start()
