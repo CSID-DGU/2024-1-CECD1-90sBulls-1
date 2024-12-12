@@ -141,3 +141,7 @@ def on_message(client, userdata, msg):
             print(f"Updated scenario for class {class_type}: {config[class_type]}")
     except json.JSONDecodeError:
         print("Error: Received data is not valid JSON.")
+
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
