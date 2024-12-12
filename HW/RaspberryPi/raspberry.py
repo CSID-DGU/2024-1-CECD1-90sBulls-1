@@ -112,3 +112,32 @@ def on_connect(client, userdata, flags, rc):
     client.publish(TOPIC_PUBLISH, "!", retain=True)
     client.subscribe(TOPIC_SUBSCRIBE_LIGHT)
     client.subscribe(TOPIC_SUBSCRIBE_SCENARIO)
+
+def on_message(client, userdata, msg):
+    global current_state
+    print(f"Message received from app: {msg.payload.decode()}")
+    try:
+        data = json.loads(msg.payload.decode())
+        if msg.topic == TOPIC_SUBSCRIBE_LIGHT:
+            # Update NeoPixel directly
+            lx = data.get("lx", 1.0)
+            r = data.get("r", 255)
+            g = data.get("g", 255)
+            b = data.get("b", 255)
+            print(f"Updating light: lx={lx}, color=({r}, {g}, {b})")
+            set_brightness(lx)
+            set_color((r, g, b))
+            current_state = {"lx": lx, "color": (r, g, b)}
+        elif msg.topic == TOPIC_SUBSCRIBE_SCENARIO:
+            # Update configuration file
+            class_type = str(data.get("class"))
+            lx = data.get("lx", 1.0)
+            r = data.get("r", 255)
+            g = data.get("g", 255)
+            b = data.get("b", 255)
+            config = load_lighting_config()
+            config[class_type] = {"lx": lx, "r": r, "g": g, "b": b}
+            save_lighting_config(config)
+            print(f"Updated scenario for class {class_type}: {config[class_type]}")
+    except json.JSONDecodeError:
+        print("Error: Received data is not valid JSON.")
