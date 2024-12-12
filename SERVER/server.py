@@ -145,3 +145,21 @@ def manage_memory():
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
     print("Memory cache cleared")
+
+# Jetson 서버 소켓 설정 및 클라이언트 연결 관리
+def receive_jetson():
+    server = Socket(SERVER_IP, SERVER_PORT)
+    try:
+        while True:
+            conn, addr = server.sock.accept()
+            print(f'Server socket is connected with {addr}')
+            conn.settimeout(TIMEOUT)  # 개별 연결에 대한 타임아웃 설정
+            client_queue.put(conn)
+            thread = threading.Thread(target=receiveImages, args=(conn,))
+            thread.start()
+    except socket.timeout:
+        print("Connection timed out")
+    except Exception as e:
+        print(e)
+    finally:
+        server.socketClose()
