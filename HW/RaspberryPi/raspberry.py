@@ -150,3 +150,36 @@ def start_mqtt_loop():
     """Run the MQTT client loop in a separate thread."""
     client.connect(BROKER, PORT, 60)
     client.loop_start()
+
+def start_mqtt_loop():
+    """Run the MQTT client loop in a separate thread."""
+    client.connect(BROKER, PORT, 60)
+    client.loop_start()
+
+async def handle_server_communication():
+    """Async function to handle communication with the server."""
+    while True:
+        try:
+            reader, writer = await asyncio.open_connection(SERVER_IP, SERVER_PORT)
+            print("Connected to the server.")
+
+            while True:
+                data = await reader.read(1024)
+                if not data:
+                    print("Server connection closed.")
+                    break
+
+                print(f"Data received from server: {data.decode()}")
+                try:
+                    data_json = json.loads(data.decode())
+                    class_type = data_json.get("class")
+                    if class_type is not None:
+                        apply_lighting(class_type)
+                    else:
+                        print("Warning: 'class' key not found in received data.")
+                except json.JSONDecodeError:
+                    print("Error: Received data is not valid JSON.")
+        except (ConnectionRefusedError, ConnectionResetError, OSError) as e:
+            print(f"Error: Server connection issue - {e}")
+            print("Reconnecting in 5 seconds...")
+            await asyncio.sleep(5)
