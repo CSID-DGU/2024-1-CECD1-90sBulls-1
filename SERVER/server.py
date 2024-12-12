@@ -51,3 +51,13 @@ def is_low_light(image, threshold=50):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     mean_brightness = gray.mean()
     return mean_brightness < threshold
+
+# YOLO 모델 예측 및 클래스별 JSON 데이터 생성
+def generate_class_value(cls):
+    if cls == 0:
+        return {"r": 255, "g": 255, "b": 0, "lx": 50, "cls": "Eating person"}
+    elif cls == 2:
+        return {"r": 204, "g": 0, "b": 0, "lx": 50, "cls": "Sleeping person"}
+    elif cls == 3:
+        return {"r": 51, "g": 0, "b": 255, "lx": 50, "cls": "Studying person"}
+    return None
