@@ -49,6 +49,7 @@ def set_brightness(brightness):
         strip.show()
 
 def turn_off():
+     """Turn off all NeoPixel strips."""
     for strip in strips:
         strip.fill((0, 0, 0))
         strip.show()
