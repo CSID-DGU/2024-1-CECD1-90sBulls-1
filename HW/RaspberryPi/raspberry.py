@@ -32,3 +32,6 @@ strips = [
     neopixel.NeoPixel(config["pin"], config["num_leds"], auto_write=False)
     for config in STRIPS_CONFIG
 ]
+
+# Current state caching to avoid redundant updates
+current_state = {"lx": None, "color": (None, None, None)}
