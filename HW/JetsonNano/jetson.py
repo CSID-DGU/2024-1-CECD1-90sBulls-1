@@ -87,16 +87,23 @@ class MotionDetector:
                 self.detect_human(img_name)
                 
     def detect_human(self, input_image_path):
-    results = self.model(input_image_path)
+        results = self.model(input_image_path)
 
-    for result in results:
-        person_boxes = [box for box in result.boxes if box.cls == 0]  # 사람 클래스 필터링
+        for result in results:
+            person_boxes = [box for box in result.boxes if box.cls == 0]  # 사람 클래스 필터링
+    
+            if len(person_boxes) > 0:
+                print("사람 감지됨")
+                self.process_image(input_image_path, "preprocessed_img.jpg")
+                print("전처리 완료")
+                self.client_socket.send_images("preprocessed_img.jpg")
+            else:
+                print("사람 없음")
 
-        if len(person_boxes) > 0:
-            print("사람 감지됨")
-            self.process_image(input_image_path, "preprocessed_img.jpg")
-            print("전처리 완료")
-            self.client_socket.send_images("preprocessed_img.jpg")
-        else:
-            print("사람 없음")
+    @staticmethod
+    def process_image(input_image_path, output_image_path):
+        image = cv2.imread(input_image_path)
+        denoised_image = cv2.GaussianBlur(image, (5, 5), 0)
+        resized_image = cv2.resize(denoised_image, (640, 640), interpolation=cv2.INTER_LINEAR)
+        cv2.imwrite(output_image_path, resized_image)
 
