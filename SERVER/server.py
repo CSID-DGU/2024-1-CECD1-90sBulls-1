@@ -45,4 +45,9 @@ class Socket:
         self.sock.listen()
         self.sock.settimeout(TIMEOUT)  # 타임아웃 설정
         print(f'Server socket [ TCP_IP: {self.TCP_IP}, TCP_PORT: {self.TCP_PORT} ] is open')
-        
+
+# 이미지 밝기 확인 함수
+def is_low_light(image, threshold=50):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    mean_brightness = gray.mean()
+    return mean_brightness < threshold
