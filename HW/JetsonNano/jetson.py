@@ -35,15 +35,15 @@ class ClientSocket:
             self.connect_server()
 
     def send_images(self, image_path):
-    image = cv2.imread(image_path)
-    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]  # JPEG 품질 설정
-    result, imgencode = cv2.imencode('.jpg', image, encode_param)
-    data = np.array(imgencode)
-    string_data = base64.b64encode(data)
-    length = str(len(string_data))
-    self.sock.sendall(length.encode('utf-8').ljust(64))
-    self.sock.send(string_data)
-    print("이미지 전송 완료")
+        image = cv2.imread(image_path)
+        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]  # JPEG 품질 설정
+        result, imgencode = cv2.imencode('.jpg', image, encode_param)
+        data = np.array(imgencode)
+        string_data = base64.b64encode(data)
+        length = str(len(string_data))
+        self.sock.sendall(length.encode('utf-8').ljust(64))
+        self.sock.send(string_data)
+        print("이미지 전송 완료")
 
 class Camera:
     def __init__(self):
@@ -61,8 +61,8 @@ class Camera:
         return frame
 
     def save_frame(self, frame, img_name="img.jpg"):
-    cv2.imwrite(img_name, frame)
-    print(f"저장됨 {img_name}")
+        cv2.imwrite(img_name, frame)
+        print(f"저장됨 {img_name}")
 
 class MotionDetector:
     def __init__(self, pir_pin, camera, client_socket, model):
@@ -75,3 +75,13 @@ class MotionDetector:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.PIR_PIN, GPIO.IN)
         GPIO.add_event_detect(self.PIR_PIN, GPIO.RISING, callback=self.motion_detected)
+
+    def motion_detected(self, channel):
+        print("동작 감지됨")
+    
+        while GPIO.input(self.PIR_PIN):
+            frame = self.camera.capture_frame()
+            if self.camera.frame_count % 30 == 0:
+                img_name = "img.jpg"
+                self.camera.save_frame(frame, img_name)
+                self.detect_human(img_name)
