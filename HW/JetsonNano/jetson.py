@@ -126,3 +126,11 @@ class MainController:
         print("동작 대기 중...")
         memory_manager = threading.Thread(target=manage_memory)  # 메모리 관리 스레드 시작
         memory_manager.start()
+
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            print("사용자에 의해 중지됨")
+        finally:
+            GPIO.cleanup()
