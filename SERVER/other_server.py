@@ -43,3 +43,8 @@ class Socket:
         self.sock.bind((self.TCP_IP, self.TCP_PORT))
         self.sock.listen()
         print(u'Server socket [ TCP_IP: ' + self.TCP_IP + ', TCP_PORT: ' + str(self.TCP_PORT) + ' ] is open')
+
+def is_low_light(image, threshold=50):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    mean_brightness = gray.mean()
+    return mean_brightness < threshold
