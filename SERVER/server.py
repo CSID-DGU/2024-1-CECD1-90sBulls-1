@@ -129,3 +129,9 @@ def send_socket(data, sender_conn):
                 client.send(data.encode())
         except queue.Empty:
             break
+
+# 이미지 압축 함수
+def compress_image(image):
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]  # JPEG 품질 90 설정
+    _, buffer = cv2.imencode('.jpg', image, encode_param)
+    return buffer.tobytes()
