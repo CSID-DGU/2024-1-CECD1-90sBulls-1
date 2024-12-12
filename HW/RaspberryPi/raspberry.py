@@ -23,3 +23,9 @@ STRIPS_CONFIG = [
     {"pin": board.D21, "num_leds": 45},
     {"pin": board.D12, "num_leds": 45}
 ]
+
+# Create NeoPixel objects
+strips = [
+    neopixel.NeoPixel(config["pin"], config["num_leds"], auto_write=False)
+    for config in STRIPS_CONFIG
+]
