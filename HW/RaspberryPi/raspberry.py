@@ -55,6 +55,7 @@ def turn_off():
         strip.show()
 
 def load_lighting_config():
+    """Load the lighting configuration JSON file."""
     try:
         with open(JSON_FILE_PATH, "r") as file:
             return json.load(file)
