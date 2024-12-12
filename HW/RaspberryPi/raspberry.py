@@ -41,3 +41,9 @@ def set_color(color):
     for strip in strips:
         strip.fill(color)
         strip.show()
+
+def set_brightness(brightness):
+    """Set the brightness for all NeoPixel strips."""
+    for strip in strips:
+        strip.brightness = brightness
+        strip.show()
