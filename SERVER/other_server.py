@@ -126,3 +126,20 @@ def receive_jetson():
         print(e)
     finally:
         server.socketClose()
+
+def enhance_brightness_with_cyclegan(image):
+    # 이미지 전처리
+    transform = transforms.Compose([
+        transforms.Resize((512, 512)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.5], [0.5])
+    ])
+    input_img = transform(image).unsqueeze(0).cuda()
+
+    # CycleGAN 모델을 사용해 밝기 변환
+    with torch.no_grad():
+        output = cyclegan_model(input_img)
+        output_img = output[0].cpu() * 0.5 + 0.5
+        output_img = transforms.ToPILImage()(output_img).resize((image.shape[1], image.shape[0]))
+
+    return numpy.array(output_img)
