@@ -59,3 +59,7 @@ class Camera:
         ret, frame = self.cap.read()
         self.frame_count += 1
         return frame
+
+    def save_frame(self, frame, img_name="img.jpg"):
+    cv2.imwrite(img_name, frame)
+    print(f"저장됨 {img_name}")
