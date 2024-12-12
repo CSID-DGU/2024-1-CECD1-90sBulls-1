@@ -100,3 +100,11 @@ def receiveImages(conn):
                 if value:
                     json_data = json.dumps(value)
                     send_socket(json_data, conn)
+            # 주기적으로 캐시 정리
+            manage_memory()
+
+    except Exception as e:
+        print(e)
+    finally:
+        client_queue.put(conn)  # 작업이 끝난 클라이언트를 큐에 반환
+        conn.close()
