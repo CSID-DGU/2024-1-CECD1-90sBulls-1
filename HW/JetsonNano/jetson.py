@@ -44,3 +44,18 @@ class ClientSocket:
     self.sock.sendall(length.encode('utf-8').ljust(64))
     self.sock.send(string_data)
     print("이미지 전송 완료")
+
+class Camera:
+    def __init__(self):
+        # CSI 카메라를 OpenCV로 제어
+        self.cap = cv2.VideoCapture("nvarguscamerasrc ! video/x-raw(memory:NVMM), width=640, height=480, format=I420 ! videoconvert ! appsink", cv2.CAP_GSTREAMER)
+        if not self.cap.isOpened():
+            print("카메라를 열 수 없습니다.")
+            sys.exit()
+
+        self.frame_count = 0
+
+    def capture_frame(self):
+        ret, frame = self.cap.read()
+        self.frame_count += 1
+        return frame
