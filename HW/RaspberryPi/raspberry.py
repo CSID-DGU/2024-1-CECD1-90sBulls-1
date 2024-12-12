@@ -53,3 +53,14 @@ def turn_off():
     for strip in strips:
         strip.fill((0, 0, 0))
         strip.show()
+
+def load_lighting_config():
+    try:
+        with open(JSON_FILE_PATH, "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        print(f"Error: Configuration file '{JSON_FILE_PATH}' not found.")
+        return {}
+    except json.JSONDecodeError:
+        print(f"Error: Configuration file '{JSON_FILE_PATH}' contains invalid JSON.")
+        return {}
