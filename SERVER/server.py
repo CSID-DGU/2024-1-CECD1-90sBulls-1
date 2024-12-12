@@ -33,3 +33,16 @@ class Socket:
         self.TCP_PORT = port
         self.sock = None
         self.socketOpen()
+
+    def socketClose(self):
+        self.sock.close()
+        print(f'Server socket [ TCP_IP: {self.TCP_IP}, TCP_PORT: {self.TCP_PORT} ] is closed')
+
+    def socketOpen(self):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+        self.sock.bind((self.TCP_IP, self.TCP_PORT))
+        self.sock.listen()
+        self.sock.settimeout(TIMEOUT)  # 타임아웃 설정
+        print(f'Server socket [ TCP_IP: {self.TCP_IP}, TCP_PORT: {self.TCP_PORT} ] is open')
+        
