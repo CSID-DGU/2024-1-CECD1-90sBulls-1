@@ -116,3 +116,56 @@ final class MQTTManager: ObservableObject {
         return currentAppState.appConnectionState.description
     }
 }
+
+extension MQTTManager: CocoaMQTTDelegate {
+    func mqtt(_ mqtt: CocoaMQTT, didSubscribeTopics success: NSDictionary, failed: [String]) {
+        TRACE("topic: \(success)")
+        currentAppState.setAppConnectionState(state: .connectedSubscribed)
+    }
+    
+    func mqtt(_ mqtt: CocoaMQTT, didUnsubscribeTopics topics: [String]) {
+        TRACE("topic: \(topics)")
+        currentAppState.setAppConnectionState(state: .connectedUnSubscribed)
+        currentAppState.clearData()
+    }
+
+    func mqtt(_ mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck) {
+        TRACE("ack: \(ack)")
+
+        if ack == .accept {
+            currentAppState.setAppConnectionState(state: .connected)
+        }
+    }
+
+    func mqtt(_ mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16) {
+        TRACE("message: \(message.string.description), id: \(id)")
+    }
+
+    func mqtt(_ mqtt: CocoaMQTT, didPublishAck id: UInt16) {
+        TRACE("id: \(id)")
+    }
+
+    func mqtt(_ mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16) {
+        TRACE("message: \(message.string.description), id: \(id)")
+        currentAppState.setReceivedMessage(text: message.string.description)
+    }
+
+    func mqtt(_ mqtt: CocoaMQTT, didUnsubscribeTopic topic: String) {
+        TRACE("topic: \(topic)")
+        currentAppState.setAppConnectionState(state: .connectedUnSubscribed)
+        currentAppState.clearData()
+    }
+
+    func mqttDidPing(_ mqtt: CocoaMQTT) {
+        TRACE()
+    }
+
+    func mqttDidReceivePong(_ mqtt: CocoaMQTT) {
+        TRACE()
+    }
+
+    func mqttDidDisconnect(_ mqtt: CocoaMQTT, withError err: Error?) {
+        TRACE("\(err.description)")
+        currentAppState.setAppConnectionState(state: .disconnected)
+    }
+}
