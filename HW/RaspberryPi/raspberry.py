@@ -67,6 +67,7 @@ def load_lighting_config():
         return {}
 
 def save_lighting_config(config):
+    """Save the lighting configuration JSON file."""
     try:
         with open(JSON_FILE_PATH, "w") as file:
             json.dump(config, file, indent=4)
