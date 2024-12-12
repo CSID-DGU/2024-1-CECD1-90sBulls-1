@@ -16,3 +16,10 @@ PORT = 1883
 TOPIC_SUBSCRIBE_LIGHT = "app/light"
 TOPIC_SUBSCRIBE_SCENARIO = "app/scenario"
 TOPIC_PUBLISH = "pi/light"
+
+# NeoPixel strip configuration
+STRIPS_CONFIG = [
+    {"pin": board.D18, "num_leds": 45},
+    {"pin": board.D21, "num_leds": 45},
+    {"pin": board.D12, "num_leds": 45}
+]
