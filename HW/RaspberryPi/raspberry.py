@@ -74,3 +74,34 @@ def save_lighting_config(config):
     except Exception as e:
         print(f"Error: Failed to save lighting configuration - {e}")
 
+def apply_lighting(class_type):
+    """Apply lighting based on the provided class type."""
+    global current_state
+    config = load_lighting_config()  # Load lighting configuration
+
+    # Retrieve settings for the given class
+    if str(class_type) in config:
+        settings = config[str(class_type)]
+        brightness = settings.get("lx", 1.0)
+        color = (settings.get("r", 255), settings.get("g", 255), settings.get("b", 255))
+
+def apply_lighting(class_type):
+    """Apply lighting based on the provided class type."""
+    global current_state
+    config = load_lighting_config()
+
+    # Retrieve settings for the given class
+    if str(class_type) in config:
+        settings = config[str(class_type)]
+        brightness = settings.get("lx", 1.0)
+        color = (settings.get("r", 255), settings.get("g", 255), settings.get("b", 255))
+
+        # Avoid redundant updates
+        if current_state["lx"] != brightness or current_state["color"] != color:
+            print(f"Applying lighting for class {class_type}: {settings}")
+            set_brightness(brightness)
+            set_color(color)
+            current_state = {"lx": brightness, "color": color}
+    else:
+        print(f"Class type {class_type} not found in configuration. Turning off lights.")
+        turn_off()
