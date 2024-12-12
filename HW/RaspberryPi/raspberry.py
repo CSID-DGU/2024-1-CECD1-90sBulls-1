@@ -65,3 +65,11 @@ def load_lighting_config():
     except json.JSONDecodeError:
         print(f"Error: Configuration file '{JSON_FILE_PATH}' contains invalid JSON.")
         return {}
+
+def save_lighting_config(config):
+    try:
+        with open(JSON_FILE_PATH, "w") as file:
+            json.dump(config, file, indent=4)
+    except Exception as e:
+        print(f"Error: Failed to save lighting configuration - {e}")
+
