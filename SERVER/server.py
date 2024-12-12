@@ -68,3 +68,11 @@ transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize([0.5], [0.5])
 ])
+
+def enhance_brightness_with_cyclegan(image):
+    input_img = transform(image).unsqueeze(0).cuda()
+    with torch.no_grad():
+        output = cyclegan_model(input_img)
+        output_img = output[0].cpu() * 0.5 + 0.5
+        output_img = transforms.ToPILImage()(output_img).resize((image.shape[1], image.shape[0]))
+    return np.array(output_img)
