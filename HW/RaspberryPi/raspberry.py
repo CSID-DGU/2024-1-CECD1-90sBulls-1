@@ -183,3 +183,13 @@ async def handle_server_communication():
             print(f"Error: Server connection issue - {e}")
             print("Reconnecting in 5 seconds...")
             await asyncio.sleep(5)
+
+async def main():
+    """Main entry point to run server and application communication tasks."""
+    try:
+        start_mqtt_loop()  # Start MQTT loop
+        await handle_server_communication()
+    except KeyboardInterrupt:
+        print("Interrupted by user. Turning off lights.")
+        turn_off()
+        client.loop_stop()
