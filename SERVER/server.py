@@ -118,3 +118,14 @@ def recvall(sock, count):
         buf += newbuf
         count -= len(newbuf)
     return buf
+
+# 클라이언트에게 JSON 데이터 전송
+def send_socket(data, sender_conn):
+    while not client_queue.empty():
+        try:
+            client = client_queue.get_nowait()
+            if client != sender_conn:
+                print("Send results to Raspberry")
+                client.send(data.encode())
+        except queue.Empty:
+            break
