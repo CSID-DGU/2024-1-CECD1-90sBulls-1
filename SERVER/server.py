@@ -25,3 +25,11 @@ client_queue = queue.Queue()
 SERVER_IP = '175.45.194.40'
 SERVER_PORT = 8080
 TIMEOUT = 10  # 소켓 타임아웃 설정 (10초)
+
+# 소켓 클래스
+class Socket:
+    def __init__(self, ip, port):
+        self.TCP_IP = ip
+        self.TCP_PORT = port
+        self.sock = None
+        self.socketOpen()
