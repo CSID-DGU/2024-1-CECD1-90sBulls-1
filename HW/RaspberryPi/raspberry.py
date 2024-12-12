@@ -35,3 +35,9 @@ strips = [
 
 # Current state caching to avoid redundant updates
 current_state = {"lx": None, "color": (None, None, None)}
+
+def set_color(color):
+    """Set the color for all NeoPixel strips."""
+    for strip in strips:
+        strip.fill(color)
+        strip.show()
