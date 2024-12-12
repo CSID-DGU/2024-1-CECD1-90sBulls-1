@@ -169,3 +169,21 @@ extension MQTTManager: CocoaMQTTDelegate {
         currentAppState.setAppConnectionState(state: .disconnected)
     }
 }
+
+extension MQTTManager {
+    func TRACE(_ message: String = "", fun: String = #function) {
+        let names = fun.components(separatedBy: ":")
+        var prettyName: String
+        if names.count == 1 {
+            prettyName = names[0]
+        } else {
+            prettyName = names[1]
+        }
+
+        if fun == "mqttDidDisconnect(_:withError:)" {
+            prettyName = "didDisconect"
+        }
+
+        print("[TRACE] [\(prettyName)]: \(message)")
+    }
+}
