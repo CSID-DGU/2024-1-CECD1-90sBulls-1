@@ -76,3 +76,27 @@ def enhance_brightness_with_cyclegan(image):
         output_img = output[0].cpu() * 0.5 + 0.5
         output_img = transforms.ToPILImage()(output_img).resize((image.shape[1], image.shape[0]))
     return np.array(output_img)
+
+# 클라이언트로부터 이미지 수신 및 처리 함수
+def receiveImages(conn):
+    try:
+        while True:
+            length = recvall(conn, 64).decode('utf-8')
+            if length is None:
+                break
+            compressed_data = recvall(conn, int(length))
+            data = np.frombuffer(compressed_data, np.uint8)
+            decimg = cv2.imdecode(data, 1)
+
+            if is_low_light(decimg, 50):
+                print("Low light detected. Enhancing brightness with CycleGAN.")
+                decimg = enhance_brightness_with_cyclegan(decimg)
+
+            results = model.predict(decimg, show=False)
+
+            for result in results:
+                cls = result.boxes.cls
+                value = generate_class_value(cls)
+                if value:
+                    json_data = json.dumps(value)
+                    send_socket(json_data, conn)
