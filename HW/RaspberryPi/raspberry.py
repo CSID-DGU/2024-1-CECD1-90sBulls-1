@@ -145,3 +145,8 @@ def on_message(client, userdata, msg):
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
+
+def start_mqtt_loop():
+    """Run the MQTT client loop in a separate thread."""
+    client.connect(BROKER, PORT, 60)
+    client.loop_start()
