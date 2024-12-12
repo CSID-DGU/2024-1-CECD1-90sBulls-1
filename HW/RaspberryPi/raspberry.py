@@ -17,6 +17,9 @@ TOPIC_SUBSCRIBE_LIGHT = "app/light"
 TOPIC_SUBSCRIBE_SCENARIO = "app/scenario"
 TOPIC_PUBLISH = "pi/light"
 
+# File path for lighting configuration
+JSON_FILE_PATH = "lighting_config.json"
+
 # NeoPixel strip configuration
 STRIPS_CONFIG = [
     {"pin": board.D18, "num_leds": 45},
