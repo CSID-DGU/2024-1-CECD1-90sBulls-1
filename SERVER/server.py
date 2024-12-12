@@ -135,3 +135,13 @@ def compress_image(image):
     encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]  # JPEG 품질 90 설정
     _, buffer = cv2.imencode('.jpg', image, encode_param)
     return buffer.tobytes()
+
+# 메모리 관리 함수
+def manage_memory():
+    # CPU 메모리 캐시 제거
+    gc.collect()
+
+    # GPU 캐시 삭제
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    print("Memory cache cleared")
