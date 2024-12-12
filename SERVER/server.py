@@ -163,3 +163,9 @@ def receive_jetson():
         print(e)
     finally:
         server.socketClose()
+
+# 메모리 관리 주기를 위한 함수
+def periodic_memory_management():
+    while True:
+        manage_memory()
+        sleep(60)  # 매 60초마다 메모리 관리 실행
