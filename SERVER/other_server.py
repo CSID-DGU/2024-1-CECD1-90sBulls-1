@@ -108,3 +108,21 @@ def send_socket(data, sender_conn):
         if client != sender_conn:
             print("Send results to Raspberry")
             client.send(data.encode())
+
+# 1. Create Socket and Wait to connect client
+# 2. Call method receiveImages() and predict image through model
+# 3. Based on the predicted result, producing output
+# 4. Create new thread and Send the result to Raspberry pi
+def receive_jetson():
+    server = Socket(SERVER_IP, SERVER_PORT)
+    try:
+        while True:
+            conn, addr = server.sock.accept()
+            print(f'Server socket is connected with {addr}')
+            clients.append(conn)
+            thread = threading.Thread(target=receiveImages, args=(conn,))
+            thread.start()
+    except Exception as e:
+        print(e)
+    finally:
+        server.socketClose()
