@@ -63,3 +63,15 @@ class Camera:
     def save_frame(self, frame, img_name="img.jpg"):
     cv2.imwrite(img_name, frame)
     print(f"저장됨 {img_name}")
+
+class MotionDetector:
+    def __init__(self, pir_pin, camera, client_socket, model):
+        self.PIR_PIN = pir_pin
+        self.camera = camera
+        self.client_socket = client_socket
+        self.model = model
+
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.PIR_PIN, GPIO.IN)
+        GPIO.add_event_detect(self.PIR_PIN, GPIO.RISING, callback=self.motion_detected)
