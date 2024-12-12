@@ -61,3 +61,10 @@ def generate_class_value(cls):
     elif cls == 3:
         return {"r": 51, "g": 0, "b": 255, "lx": 50, "cls": "Studying person"}
     return None
+
+# CycleGAN 변환 함수
+transform = transforms.Compose([
+    transforms.Resize((512, 512)),
+    transforms.ToTensor(),
+    transforms.Normalize([0.5], [0.5])
+])
