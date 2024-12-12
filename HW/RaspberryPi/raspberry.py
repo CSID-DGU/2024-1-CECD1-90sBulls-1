@@ -105,3 +105,10 @@ def apply_lighting(class_type):
     else:
         print(f"Class type {class_type} not found in configuration. Turning off lights.")
         turn_off()
+
+# MQTT handlers
+def on_connect(client, userdata, flags, rc):
+    print(f"Connected with result code {rc}")
+    client.publish(TOPIC_PUBLISH, "!", retain=True)
+    client.subscribe(TOPIC_SUBSCRIBE_LIGHT)
+    client.subscribe(TOPIC_SUBSCRIBE_SCENARIO)
