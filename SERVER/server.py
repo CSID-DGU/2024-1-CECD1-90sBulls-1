@@ -164,6 +164,15 @@ def receive_jetson():
     finally:
         server.socketClose()
 
+# 메인 함수
+def main():
+    receive_socket = threading.Thread(target=receive_jetson)
+    receive_socket.start()
+
+    # 주기적으로 메모리 캐시를 관리하는 스레드 시작
+    memory_manager = threading.Thread(target=periodic_memory_management)
+    memory_manager.start()
+
 # 메모리 관리 주기를 위한 함수
 def periodic_memory_management():
     while True:
