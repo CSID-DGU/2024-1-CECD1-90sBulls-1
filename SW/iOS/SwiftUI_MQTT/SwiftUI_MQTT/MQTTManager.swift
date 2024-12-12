@@ -187,3 +187,13 @@ extension MQTTManager {
         print("[TRACE] [\(prettyName)]: \(message)")
     }
 }
+
+extension Optional {
+    // Unwrap optional value for printing log only
+    var description: String {
+        if let wraped = self {
+            return "\(wraped)"
+        }
+        return ""
+    }
+}
