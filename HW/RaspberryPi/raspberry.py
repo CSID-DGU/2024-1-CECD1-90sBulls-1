@@ -193,3 +193,6 @@ async def main():
         print("Interrupted by user. Turning off lights.")
         turn_off()
         client.loop_stop()
+
+if __name__ == "__main__":
+    asyncio.run(main())
