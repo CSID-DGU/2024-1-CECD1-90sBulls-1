@@ -114,3 +114,10 @@ def manage_memory():
             torch.cuda.empty_cache()  # GPU 메모리 관리
         print("메모리 캐시 삭제 완료")
         time.sleep(60)  # 매 60초마다 메모리 관리
+
+class MainController:
+    def __init__(self, pir_pin, tcp_ip, tcp_port, yolo_model_path):
+        self.client_socket = ClientSocket(tcp_ip, tcp_port)
+        self.camera = Camera()
+        self.model = YOLO(yolo_model_path)
+        self.motion_detector = MotionDetector(pir_pin, self.camera, self.client_socket, self.model)
