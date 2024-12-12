@@ -47,3 +47,8 @@ def set_brightness(brightness):
     for strip in strips:
         strip.brightness = brightness
         strip.show()
+
+def turn_off():
+    for strip in strips:
+        strip.fill((0, 0, 0))
+        strip.show()
