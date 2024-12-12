@@ -143,3 +143,18 @@ def enhance_brightness_with_cyclegan(image):
         output_img = transforms.ToPILImage()(output_img).resize((image.shape[1], image.shape[0]))
 
     return numpy.array(output_img)
+
+# plan to develop in second semester
+# def receive_application(self):
+
+def main():
+
+    # For Jetson Nano (After receiving images from client, predict result through model and send to Raspberry pi)
+    receive_socket = threading.Thread(target=receive_jetson)
+    receive_socket.start()
+
+    # For Application (After receiving Color temperature and Lux from client, send to Raspberry pi)
+    # plan to develop in second semester
+
+if __name__ == "__main__":
+    main()
