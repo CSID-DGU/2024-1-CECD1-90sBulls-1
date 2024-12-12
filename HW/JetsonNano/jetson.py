@@ -85,3 +85,18 @@ class MotionDetector:
                 img_name = "img.jpg"
                 self.camera.save_frame(frame, img_name)
                 self.detect_human(img_name)
+                
+    def detect_human(self, input_image_path):
+    results = self.model(input_image_path)
+
+    for result in results:
+        person_boxes = [box for box in result.boxes if box.cls == 0]  # 사람 클래스 필터링
+
+        if len(person_boxes) > 0:
+            print("사람 감지됨")
+            self.process_image(input_image_path, "preprocessed_img.jpg")
+            print("전처리 완료")
+            self.client_socket.send_images("preprocessed_img.jpg")
+        else:
+            print("사람 없음")
+
