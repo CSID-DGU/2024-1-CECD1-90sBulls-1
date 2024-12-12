@@ -9,3 +9,10 @@ import paho.mqtt.client as mqtt
 # Server configuration
 SERVER_IP = '211.188.63.60'
 SERVER_PORT = 8080
+
+# MQTT configuration
+BROKER = "localhost"
+PORT = 1883
+TOPIC_SUBSCRIBE_LIGHT = "app/light"
+TOPIC_SUBSCRIBE_SCENARIO = "app/scenario"
+TOPIC_PUBLISH = "pi/light"
