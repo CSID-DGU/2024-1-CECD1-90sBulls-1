@@ -107,3 +107,10 @@ class MotionDetector:
         resized_image = cv2.resize(denoised_image, (640, 640), interpolation=cv2.INTER_LINEAR)
         cv2.imwrite(output_image_path, resized_image)
 
+def manage_memory():
+    while True:
+        gc.collect()  # CPU 메모리 관리
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()  # GPU 메모리 관리
+        print("메모리 캐시 삭제 완료")
+        time.sleep(60)  # 매 60초마다 메모리 관리
