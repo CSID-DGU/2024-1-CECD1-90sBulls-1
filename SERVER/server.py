@@ -108,3 +108,13 @@ def receiveImages(conn):
     finally:
         client_queue.put(conn)  # 작업이 끝난 클라이언트를 큐에 반환
         conn.close()
+
+# 소켓에서 데이터 수신
+def recvall(sock, count):
+    buf = b''
+    while count:
+        newbuf = sock.recv(count)
+        if not newbuf: return None
+        buf += newbuf
+        count -= len(newbuf)
+    return buf
