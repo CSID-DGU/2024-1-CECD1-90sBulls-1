@@ -4,4 +4,4 @@
 
 ## 시스템 구성도
 
-![system](https://github.com/user-attachments/assets/442a780d-282c-4498-afaa-b9cafa961097)
+![system](https://github.com/user-attachments/assets/e78e55dc-923e-407c-947c-94f109cb1de1)
